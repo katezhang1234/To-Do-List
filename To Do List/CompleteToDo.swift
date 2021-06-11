@@ -10,7 +10,7 @@ import UIKit
 class CompleteToDo: UIViewController {
 
     var previousVC = ToDoTableViewController()
-    var selectedToDo = ToDo()
+    var selectedToDo: ToDoCD?
     
     var isLight = ToDoTableViewController.isLight
     
@@ -22,13 +22,6 @@ class CompleteToDo: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        completeButton.layer.cornerRadius = 7
-        
-        titleToDo.text = selectedToDo.name
-        noteToDo.text = selectedToDo.note
-        
-        noteToDo.sizeToFit()
         
         if isLight{
             overrideUserInterfaceStyle = .light
@@ -37,17 +30,23 @@ class CompleteToDo: UIViewController {
             titleToDo.textColor = .white
             noteToDo.textColor = .white
         }
+        
+        completeButton.layer.cornerRadius = 7
+        
+        titleToDo.text = selectedToDo?.name
+        noteToDo.text = selectedToDo?.note
+        
+        noteToDo.sizeToFit()
     }
     
     
     @IBAction func completeTapped(_ sender: UIButton) {
-        
+        if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
+            if let theToDo = selectedToDo {
+              context.delete(theToDo)
+              navigationController?.popViewController(animated: true)
+            }
+          }
     }
     
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-
 }

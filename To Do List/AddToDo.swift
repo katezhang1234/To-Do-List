@@ -35,24 +35,21 @@ class AddToDo: UIViewController {
     }
     
     @IBAction func addTapped(_ sender: UIButton) {
-        let toDo = ToDo()
+      if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
+            let toDo = ToDoCD(entity: ToDoCD.entity(), insertInto: context)
 
-        if let titleText = titleTextField.text {
-            toDo.name = titleText
-            toDo.important = importantSwitch.isOn
-        }
-        
-        if let noteText = noteTextField.text{
-            toDo.note = noteText
-        }
-        
-        previousVC.toDos.append(toDo)
-        previousVC.tableView.reloadData()
-        navigationController?.popViewController(animated: true)
+            if let titleText = titleTextField.text {
+                toDo.name = titleText
+                toDo.important = importantSwitch.isOn
+            }
+            
+            if let noteText = noteTextField.text{
+                toDo.note = noteText
+            }
+
+            try? context.save()
+            navigationController?.popViewController(animated: true)
+          }
     }
-    
-    /*
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    }*/
 
 }
