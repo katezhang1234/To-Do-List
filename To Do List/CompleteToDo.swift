@@ -28,6 +28,8 @@ class CompleteToDo: UIViewController {
         titleToDo.text = selectedToDo.name
         noteToDo.text = selectedToDo.note
         
+        noteToDo.sizeToFit()
+        
         if isLight{
             overrideUserInterfaceStyle = .light
         }else{
