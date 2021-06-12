@@ -83,5 +83,31 @@ class ToDoTableViewController: UITableViewController {
             }
           }
     }
+    
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Complete") { [self] (_, _, completionHandler) in
+                if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext{
+
+                    context.delete(self.toDos[indexPath.row])
+                    try? context.save()
+                    self.getToDos()
+                }
+                completionHandler(true)
+            }
+
+        deleteAction.backgroundColor = UIColor.green
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return configuration
+    }
 
 }
