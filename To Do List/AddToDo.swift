@@ -32,6 +32,13 @@ class AddToDo: UIViewController {
         }
         
         addButton.layer.cornerRadius = 7
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     @IBAction func addTapped(_ sender: UIButton) {
